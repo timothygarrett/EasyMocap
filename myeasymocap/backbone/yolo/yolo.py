@@ -87,7 +87,8 @@ class BaseYOLOv5:
                 continue
             box = res[:5]
             select.append(box)
-        select = np.stack(select)
+        if len(select) > 0:
+            select = np.stack(select)
         return select, results
 
     def select_bbox(self, select, results, imgname):
@@ -108,7 +109,7 @@ class BaseYOLOv5:
             res = self.detect(images[nv], imgnames[nv])            
             select, res = self.select_class(res, self.name)
             if len(select) == 0:
-                select = np.zeros((0,5), dtype=np.float32)
+                select = np.zeros((1,5), dtype=np.float32)
             else:
                 select = np.stack(select).astype(np.float32)
             # TODO: add track here
